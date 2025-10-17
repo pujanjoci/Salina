@@ -101,42 +101,20 @@ const Header = ({ activeSection, setActiveSection }) => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8 items-center">
-            {isPolicyPage ? (
-              <>
-                <Link 
-                  to="/" 
-                  className="text-white/80 hover:text-purple-400 text-sm font-medium transition-colors duration-300"
-                >
-                  Back to Home
-                </Link>
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="text-white/80 hover:text-purple-400 text-sm font-medium transition-colors duration-300"
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </>
-            ) : (
-              <>
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`relative text-sm font-medium transition-all duration-300 hover:text-purple-400 ${
-                      activeSection === item.id ? 'text-purple-400' : 'text-white/80'
-                    }`}
-                  >
-                    {item.label}
-                    {activeSection === item.id && (
-                      <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-purple-400 animate-scale-in"></span>
-                    )}
-                  </button>
-                ))}
-              </>
-            )}
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`relative text-sm font-medium transition-all duration-300 hover:text-purple-400 ${
+                  activeSection === item.id ? 'text-purple-400' : 'text-white/80'
+                }`}
+              >
+                {item.label}
+                {activeSection === item.id && (
+                  <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-purple-400 animate-scale-in"></span>
+                )}
+              </button>
+            ))}
           </div>
 
           {/* Mobile Menu Button */}
@@ -181,15 +159,6 @@ const Header = ({ activeSection, setActiveSection }) => {
         >
           <div className="bg-slate-900/95 backdrop-blur-md shadow-lg border-t border-slate-700 px-6 py-4 w-full overflow-x-hidden">
             <div className="flex flex-col space-y-2">
-              {isPolicyPage && (
-                <Link 
-                  to="/" 
-                  className="py-3 px-4 rounded-lg text-white/80 hover:bg-slate-800 transition-all duration-300 font-medium text-left"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Back to Home
-                </Link>
-              )}
               {navItems.map((item) => (
                 <button
                   key={item.id}
