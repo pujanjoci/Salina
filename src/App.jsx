@@ -28,25 +28,39 @@ function App() {
     return () => clearTimeout(fallbackTimer)
   }, [])
 
-  const MainContent = () => (
+  // Create a Layout component that includes Header and Footer
+  const Layout = ({ children }) => (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
-      <main>
-        <div id="home">
-          <Hero setActiveSection={setActiveSection} />
-        </div>
-        <div id="about">
-          <About setActiveSection={setActiveSection} />
-        </div>
-        <div id="portfolio">
-          <Portfolio setActiveSection={setActiveSection} />
-        </div>
-        <div id="contact">
-          <Contact setActiveSection={setActiveSection} />
-        </div>
-      </main>
+      <main>{children}</main>
       <Footer />
     </div>
+  )
+
+  const MainContent = () => (
+    <Layout>
+      <div id="home">
+        <Hero setActiveSection={setActiveSection} />
+      </div>
+      <div id="about">
+        <About setActiveSection={setActiveSection} />
+      </div>
+      <div id="portfolio">
+        <Portfolio setActiveSection={setActiveSection} />
+      </div>
+      <div id="contact">
+        <Contact setActiveSection={setActiveSection} />
+      </div>
+    </Layout>
+  )
+
+  // Policy pages with Layout
+  const PolicyPage = ({ children }) => (
+    <Layout>
+      <div className="container mx-auto px-4 py-8 pt-24"> {/* Added pt-24 to account for fixed header */}
+        {children}
+      </div>
+    </Layout>
   )
 
   return (
@@ -56,9 +70,30 @@ function App() {
       <div className={isLoading ? 'hidden' : 'block'}>
         <Routes>
           <Route path="/" element={<MainContent />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route 
+            path="/privacy-policy" 
+            element={
+              <PolicyPage>
+                <PrivacyPolicy />
+              </PolicyPage>
+            } 
+          />
+          <Route 
+            path="/terms-of-service" 
+            element={
+              <PolicyPage>
+                <TermsOfService />
+              </PolicyPage>
+            } 
+          />
+          <Route 
+            path="/cookie-policy" 
+            element={
+              <PolicyPage>
+                <CookiePolicy />
+              </PolicyPage>
+            } 
+          />
           {/* Add a catch-all route */}
           <Route path="*" element={<MainContent />} />
         </Routes>

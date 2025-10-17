@@ -8,7 +8,6 @@ const Header = ({ activeSection, setActiveSection }) => {
   const lastScrollY = useRef(0)
   const location = useLocation()
 
-  // Check if we're on a policy page
   const isPolicyPage = location.pathname !== '/'
 
   useEffect(() => {
@@ -35,6 +34,10 @@ const Header = ({ activeSection, setActiveSection }) => {
 
       window.addEventListener('scroll', handleScroll, { passive: true })
       return () => window.removeEventListener('scroll', handleScroll)
+    } else {
+      // On policy pages, always show header with background
+      setIsScrolled(true)
+      setIsHeaderVisible(true)
     }
   }, [isPolicyPage])
 
@@ -46,6 +49,12 @@ const Header = ({ activeSection, setActiveSection }) => {
   ]
 
   const scrollToSection = (sectionId) => {
+    if (isPolicyPage) {
+      // Navigate to home page and then scroll to section
+      window.location.href = `/#${sectionId}`
+      return
+    }
+    
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
@@ -58,9 +67,16 @@ const Header = ({ activeSection, setActiveSection }) => {
     scrollToSection('contact')
   }
 
-  // If we're on a policy page, don't render the main navigation header
-  if (isPolicyPage) {
-    return null
+  const handleLogoClick = () => {
+    if (isPolicyPage) {
+      // If on policy page, navigate to home
+      window.location.href = '/'
+    } else {
+      // If on home page, scroll to top and set active section
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setActiveSection('home')
+    }
+    setIsMobileMenuOpen(false)
   }
 
   return (
@@ -68,53 +84,77 @@ const Header = ({ activeSection, setActiveSection }) => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
       } ${
-        isScrolled 
+        isScrolled || isPolicyPage
           ? 'bg-slate-900/80 backdrop-blur-md py-4 shadow-lg' 
           : 'bg-transparent py-6'
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center">
-          {/* Logo - made smaller on mobile */}
-          <Link 
-            to="/" 
-            className="text-lg md:text-2xl font-bold text-white animate-fade-in hover:text-purple-400 transition-colors duration-300"
-            onClick={() => setActiveSection('home')}
+          {/* Logo */}
+          <button
+            onClick={handleLogoClick}
+            className="text-lg md:text-2xl font-bold text-white animate-fade-in hover:text-purple-400 transition-colors duration-300 text-left"
           >
             Salina <span className="text-purple-400">Kayastha</span>
-          </Link>
+          </button>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative text-sm font-medium transition-all duration-300 hover:text-purple-400 ${
-                  activeSection === item.id ? 'text-purple-400' : 'text-white/80'
-                }`}
-              >
-                {item.label}
-                {activeSection === item.id && (
-                  <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-purple-400 animate-scale-in"></span>
-                )}
-              </button>
-            ))}
+          <div className="hidden md:flex space-x-8 items-center">
+            {isPolicyPage ? (
+              <>
+                <Link 
+                  to="/" 
+                  className="text-white/80 hover:text-purple-400 text-sm font-medium transition-colors duration-300"
+                >
+                  Back to Home
+                </Link>
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="text-white/80 hover:text-purple-400 text-sm font-medium transition-colors duration-300"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            ) : (
+              <>
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`relative text-sm font-medium transition-all duration-300 hover:text-purple-400 ${
+                      activeSection === item.id ? 'text-purple-400' : 'text-white/80'
+                    }`}
+                  >
+                    {item.label}
+                    {activeSection === item.id && (
+                      <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-purple-400 animate-scale-in"></span>
+                    )}
+                  </button>
+                ))}
+              </>
+            )}
           </div>
 
-          {/* Desktop CTA Button & Mobile Menu Button */}
+          {/* Mobile Menu Button */}
           <div className="flex items-center gap-4">
-            <button 
-              onClick={handleLetsConnect}
-              className="hidden md:block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 animate-fade-in"
-            >
-              Let's Connect
-            </button>
+            {!isPolicyPage && (
+              <button 
+                onClick={handleLetsConnect}
+                className="hidden md:block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 animate-fade-in"
+              >
+                Let's Connect
+              </button>
+            )}
 
             {/* Mobile Menu Button */}
             <button 
               className="md:hidden text-white focus:outline-none p-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center space-y-1">
                 <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
@@ -131,7 +171,7 @@ const Header = ({ activeSection, setActiveSection }) => {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu - Now also hides with header */}
+        {/* Mobile Navigation Menu */}
         <div
           className={`md:hidden fixed left-0 w-screen transition-all duration-300 ease-in-out z-40 ${
             isHeaderVisible 
@@ -141,12 +181,21 @@ const Header = ({ activeSection, setActiveSection }) => {
         >
           <div className="bg-slate-900/95 backdrop-blur-md shadow-lg border-t border-slate-700 px-6 py-4 w-full overflow-x-hidden">
             <div className="flex flex-col space-y-2">
+              {isPolicyPage && (
+                <Link 
+                  to="/" 
+                  className="py-3 px-4 rounded-lg text-white/80 hover:bg-slate-800 transition-all duration-300 font-medium text-left"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Back to Home
+                </Link>
+              )}
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`text-left py-3 px-4 rounded-lg transition-all duration-300 font-medium ${
-                    activeSection === item.id
+                    !isPolicyPage && activeSection === item.id
                       ? 'bg-purple-600 text-white'
                       : 'text-white/80 hover:bg-slate-800'
                   }`}
@@ -154,13 +203,6 @@ const Header = ({ activeSection, setActiveSection }) => {
                   {item.label}
                 </button>
               ))}
-              {/* Mobile Connect Button */}
-              <button 
-                onClick={handleLetsConnect}
-                className="md:hidden bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 text-left"
-              >
-                Let's Connect
-              </button>
             </div>
           </div>
         </div>
