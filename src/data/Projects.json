@@ -1,0 +1,65 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "E-Commerce Platform",
+      "category": "web",
+      "description": "Full-stack e-commerce solution with React and Node.js featuring secure payments, inventory management, and admin dashboard.",
+      "technologies": ["React", "Node.js", "MongoDB", "Stripe", "JWT"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    },
+    {
+      "id": 2,
+      "title": "Mobile Banking App",
+      "category": "mobile",
+      "description": "Secure mobile banking application with biometric authentication, real-time transactions, and financial analytics.",
+      "technologies": ["React Native", "Firebase", "TypeScript", "Biometric Auth"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    },
+    {
+      "id": 3,
+      "title": "AI Content Generator",
+      "category": "ai",
+      "description": "AI-powered content generation platform with real-time editing, multiple templates, and collaborative features.",
+      "technologies": ["Python", "OpenAI", "FastAPI", "React", "PostgreSQL"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    },
+    {
+      "id": 4,
+      "title": "Dashboard Analytics",
+      "category": "web",
+      "description": "Real-time analytics dashboard for business intelligence with interactive charts and custom reporting.",
+      "technologies": ["Vue.js", "D3.js", "Express", "WebSocket", "Chart.js"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    },
+    {
+      "id": 5,
+      "title": "Fitness Tracker",
+      "category": "mobile",
+      "description": "Cross-platform fitness tracking app with social features, workout plans, and progress analytics.",
+      "technologies": ["Flutter", "SQLite", "Google Fit API", "Firebase Auth"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    },
+    {
+      "id": 6,
+      "title": "Chatbot Assistant",
+      "category": "ai",
+      "description": "Intelligent chatbot for customer service automation with natural language processing and multi-platform support.",
+      "technologies": ["Python", "TensorFlow", "WebSockets", "React", "NLP"],
+      "liveLink": "https://example.com",
+      "githubLink": "https://github.com/example"
+    }
+    
+  ],
+  "filters": [
+    { "key": "all", "label": "All Projects" },
+    { "key": "web", "label": "Web Development" },
+    { "key": "mobile", "label": "Mobile Apps" },
+    { "key": "ai", "label": "AI & ML" }
+  ]
+}
