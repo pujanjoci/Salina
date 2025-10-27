@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
+import MyEdge from './components/MyUniqueEdge'
 import Portfolio from './components/Portfolio'
 import Contact from './components/Contact'
+import Gallery from './components/Gallery'
 import Footer from './components/Footer'
 import LoadingScreen from './components/LoadingScreen'
 import PrivacyPolicy from './components/PrivacyPolicyPage'
@@ -45,8 +47,14 @@ function App() {
       <div id="about">
         <About setActiveSection={setActiveSection} />
       </div>
+      <div id="myedge">
+        <MyEdge setActiveSection={setActiveSection} />
+      </div>
       <div id="portfolio">
         <Portfolio setActiveSection={setActiveSection} />
+      </div>
+     <div id="gallery">
+        <Gallery setActiveSection={setActiveSection} />
       </div>
       <div id="contact">
         <Contact setActiveSection={setActiveSection} />

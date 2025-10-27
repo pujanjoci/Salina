@@ -147,7 +147,7 @@ const Footer = () => {
               {[
                 'Web Development',
                 'UI/UX Design',
-                'Mobile Apps',
+                'Graphic Designing',
                 'Consulting'
               ].map((service, index) => (
                 <li key={service}>
