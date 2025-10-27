@@ -44,7 +44,9 @@ const Header = ({ activeSection, setActiveSection }) => {
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
+    { id: 'myedge', label: 'MyEdge' },
     { id: 'portfolio', label: 'Portfolio' },
+    { id: 'gallery', label: 'Gallery' },
     { id: 'contact', label: 'Contact' },
   ]
 
