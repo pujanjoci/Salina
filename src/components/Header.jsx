@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const Header = ({ activeSection, setActiveSection }) => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -7,6 +7,7 @@ const Header = ({ activeSection, setActiveSection }) => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const lastScrollY = useRef(0)
   const location = useLocation()
+  const navigate = useNavigate() // Add useNavigate hook
 
   const isPolicyPage = location.pathname !== '/'
 
@@ -53,15 +54,22 @@ const Header = ({ activeSection, setActiveSection }) => {
   const scrollToSection = (sectionId) => {
     if (isPolicyPage) {
       // Navigate to home page and then scroll to section
-      window.location.href = `/#${sectionId}`
-      return
-    }
-    
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setActiveSection(sectionId)
-      setIsMobileMenuOpen(false)
+      navigate('/', { replace: true }) // Use navigate instead of window.location.href
+      // Use setTimeout to ensure navigation completes before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+          setActiveSection(sectionId)
+        }
+      }, 100)
+    } else {
+      const element = document.getElementById(sectionId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+        setActiveSection(sectionId)
+        setIsMobileMenuOpen(false)
+      }
     }
   }
 
@@ -71,8 +79,8 @@ const Header = ({ activeSection, setActiveSection }) => {
 
   const handleLogoClick = () => {
     if (isPolicyPage) {
-      // If on policy page, navigate to home
-      window.location.href = '/'
+      // If on policy page, navigate to home using navigate
+      navigate('/')
     } else {
       // If on home page, scroll to top and set active section
       window.scrollTo({ top: 0, behavior: 'smooth' })
